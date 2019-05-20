@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<meta charset="UTF-8"> 
+<html>
+    
+    <head>
+            <script>
+                var username = prompt("이름을 입력해주새요",0);
+                var num = localStorage.getItem(username);
+                if(num == null){
+                    num = '0';
+                }
+                num = parseInt(num);
+                num += 1;
+                localStorage.setItem(username,num);
+                var selectArray  = [1,1,1,1,1,1,1,1]
+            </script>
+    </head>
+    <body style="text-align:center">
+        <p> 이상형 월드컵 </p>
+        <p>N강</p>
+        <hr>
+        <form>
+            <input type="radio" name = "select" value ="1">name <img id = "name" src="" alt="이미지1">
+            <input type="radio" name = "select" value ="2">name <img id = "name" src="" alt="이미지2">
+        </form>
+    </body>
+</html>
