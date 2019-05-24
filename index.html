@@ -1,28 +1,132 @@
 <!DOCTYPE html>
-<meta charset="UTF-8"> 
+<meta charset="UTF-8">
 <html>
-    
-    <head>
-            <script>
-                var username = prompt("이름을 입력해주새요",0);
-                var num = localStorage.getItem(username);
-                if(num == null){
-                    num = '0';
-                }
-                num = parseInt(num);
-                num += 1;
-                localStorage.setItem(username,num);
-                var selectArray  = [1,1,1,1,1,1,1,1]
-                var imgSrc =["데리버거.jpg","새우버거.jpg","소프트콘.jpg","양념감자.jpg","치즈스틱.jpg",""]
-            </script>
-    </head>
-    <body style="text-align:center">
-        <p> 롯데리아 이상형 월드컵 </p>
-        <p>N강</p>
-        <hr>
-        <form>
-            <input type="radio" name = "select" value ="1">name <img id = "name" src="" alt="이미지1">
-            <input type="radio" name = "select" value ="2">name <img id = "name" src="" alt="이미지2">
-        </form>
-    </body>
+
+<head>
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+        var username,num;
+        
+        
+
+
+
+        //var selectArray = [1, 1, 1, 1, 1, 1, 1, 1];
+        var rendArr = [0, 1, 2, 3, 4, 5, 6, 7];
+        var imgSrc = ["데리버거.jpg", "새우버거.jpg", "소프트콘.jpg", "양념감자.jpg", "치즈스틱.jpg", "치킨너겟.jpg", "콘샐러드.jpg", "콜라.jpg"];
+        var index = 0, round = 1;
+        var img1, img2, select;
+
+        $(document).ready(function () {  // 
+            username = prompt("이름을 입력해주새요", 0);
+            num = localStorage.getItem(username);
+            if (num == null) {
+                num = '0';
+            }
+            num = parseInt(num);
+            num += 1;
+            localStorage.setItem(username, num);
+            $("#round").text(8/round +"강("+ index+"/"+8/round+")");
+            start();
+
+        })
+        // $("label img").on("click", function () {
+        //     $("#" + $(this).parents("label").attr("for")).click();
+        // });
+        function end(){
+            alert(username+"님의"+num+"번째 선택은 "+imgSrc[rendArr[index]].split(".")[0]+"였습니다.");
+        }
+
+
+        function start() {
+            img1 = $("#img1") 
+            img2 = $("#img2") 
+      
+
+            rendArr = arrayShuffle(rendArr);
+
+            var temp1 = imgSrc[rendArr[0]];
+            var temp2 = imgSrc[rendArr[1]];
+
+            img1.prop("src", temp1);
+            img2.prop("src", temp2);
+            img1.prop("title", temp1);
+            img2.prop("title", temp2);
+
+        
+            index= 0;
+        }
+
+        function refill() {
+            select = $("input[name = 'select']:radio:checked").val();
+            console.log("select:"+select);
+            if(select == 2)
+                rendArr[index] = rendArr[index+round];
+            
+            
+            index+=2*round;
+            if(index >=8)
+            {
+                index = 0;
+                round*=2;
+                
+            }
+            if(round == 4)
+                $("#round").text("결승");
+            else if(round == 8)
+                end();
+            else 
+                $("#round").text(8/round +"강("+ index+"/"+8/round+")");
+            
+
+
+            var temp1 = imgSrc[rendArr[index]];
+            var temp2 = imgSrc[rendArr[index+round]];
+
+            img1.prop("src", temp1);
+            img2.prop("src", temp2);
+            img1.prop("title", temp1.split(".")[0]);
+            img2.prop("title", temp2.split(".")[0]);
+            console.log(rendArr);
+
+        }
+
+        function arrayShuffle(oldArray) {
+            var newArray = oldArray.slice();
+            var len = newArray.length;
+            var i = len;
+            while (i--) {
+                var p = parseInt(Math.random() * len);
+                var t = newArray[i];
+                newArray[i] = newArray[p];
+                newArray[p] = t;
+            }
+            return newArray;
+        };
+
+
+
+    </script>
+</head>
+
+<body style="text-align:center">
+    <p> 롯데리아 이상형 월드컵 </p>
+    <p id = 'round'>N강</p>
+    <hr>
+    <form>
+        <label>
+            <input type="radio" name="select" value="1" id="rd1">
+            <img id="img1" src="" alt="이미지1">
+        </label>
+        <label>
+            <input type="radio" name="select" value="2" id="rd2">
+            <img id="img2" src="" alt="이미지2">
+        </label>
+        <br><br>
+
+        <input type="button" name="input" value="선택" onclick="refill()">
+    </form>
+</body>
+
+
 </html>
